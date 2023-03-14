@@ -1,0 +1,302 @@
+---
+title: "Pragmatyczny ML Engineer"
+subtitle: "czyli jak z**AI**mponować podejściem do rozwiązywania problemów"
+author: Grzegorz Chlebus
+date: "15-03-2023"
+from: markdown+emoji
+format: 
+    revealjs:
+        chalkboard: true
+        code-copy: true
+---
+
+## Intro
+
+**Grzegorz Chlebus, PhD**
+
+- Manager ML Accelerator Team @ Qualtrics, PL
+- Senior ML Engineer @ Smarter Diagnostics, PL
+- PhD in Medical Sciences @ Radboudumc, NL
+
+. . .
+
+- Wcześniej
+    - Fraunhofer MEVIS, DE 
+    - Samsung R&D, PL
+
+## Problem 
+
+. . .
+
+Pracujemy w LumpexAI, w którym tworzymy serwis umożliwiający sprzedaż używanych bądź nowych ubrań. 
+
+. . .
+
+<br>
+Product Manager (PM) przychodzi do nas z pomysłem na ułatwienie wystawiania ofert poprzez automatyczne wykrywanie kategorii ubrania na podstawie wrzuconego zdjęcia. PM obiecuje, że ma dużo danych do treningu z etykietami.
+
+. . .
+
+<br>
+Co robisz?
+
+## Zdefiniowanie Problemu
+Jaki problem rozwiązujemy? Co nasze rozwiązanie ma poprawić?
+
+. . .
+
+Czy są inne metody rozwiązania problemu niż ML?
+
+::: {.incremental}
+- Modyfikacja UI
+- Prosta heurystyka
+:::
+
+. . .
+
+Wymagania
+
+::: {.incremental}
+- Biznesowe (np. jakość predykcji, interpretowalność modelu)
+- Techniczne (np. czas odpowiedzi, rozmiar danych, przewidywany ruch)
+:::
+
+## Dane
+
+. . .
+
+Gdzie są i w jakiej ilości?
+
+::: {.incremental}
+- Często to my musimy się zająć lub pomóc w procesie zbierania danych.
+:::
+
+. . .
+
+Czy mamy do nich prawo, tzn. czy możemy w ich oparciu budować produkty?
+
+::: {.incremental}
+- Może nie mamy prawa do danych klienta lub potrzebne są dodatkowe umowy.
+:::
+
+. . .
+
+Anonimizacja, agregacja, miejsce przechowywania
+
+## Co dalej? {auto-animate="true"}
+
+. . .
+
+```python
+import numpy as np
+import keras
+```
+
+## Co dalej? {auto-animate="true"}
+
+```python
+import numpy as np
+import keras
+
+images = np.load("data/v1/images.npy")
+labels = np.load("data/v1/labels.npy")
+```
+
+## Co dalej? {auto-animate="true"}
+
+```python
+import numpy as np
+import keras
+
+images = np.load("data/v1/images.npy")
+labels = np.load("data/v1/labels.npy")
+model = keras.applications.densenet.DenseNet121()
+```
+
+## Co dalej? {auto-animate="true"}
+
+```python
+import numpy as np
+import keras
+
+images = np.load("data/v1/images.npy")
+labels = np.load("data/v1/labels.npy")
+model = keras.applications.densenet.DenseNet121()
+model.fit(images, labels)
+```
+
+## Co dalej? {auto-animate="true"}
+
+```python
+import numpy as np
+import keras
+
+images = np.load("data/v1/images.npy")
+labels = np.load("data/v1/labels.npy")
+model = keras.applications.densenet.DenseNet121()
+model.fit(images, labels)
+model.save("production_models/model_v1.h5")
+```
+
+## Co dalej? {auto-animate="true"}
+
+```python
+import numpy as np
+import keras
+
+images = np.load("data/v1/images.npy")
+labels = np.load("data/v1/labels.npy")
+model = keras.applications.densenet.DenseNet121()
+model.fit(images, labels)
+model.save("production_models/model_v1.h5")
+```
+
+Robota gotowa, czas na :coffee:.
+
+## Exploratory Data Analysis (EDA)
+
+::: {.incremental}
+- Ile mamy klas, po ile egzemplarzy z każdej klasy?
+- Jakie są rozmiary obrazków?
+- Czy wszystkie są tak samo wykadrowane?
+- Metadane: czy mamy informację o aparacie wykorzystanym do zrobienia zdjęcia?
+:::
+
+## Ewaluacja: train/test split
+
+Na co zwrócić uwagę?
+
+::: {.incremental}
+- Test set powinien mieć niezaburzony rozkład danych
+- Imbalanced data - stratified sampling
+- Time series - test set powinien zawierać dane *nowsze* niż train
+- Dane związane z ludźmi, klientami, ankietami, etc. - dane z jednej ankiety powinny być tylko w jednym podzbiorze
+:::
+
+## EDA part 2
+
+::: {.incremental}
+- Sprawdźmy jak wyszedł nam split
+- Jeśli więcej niż jeden labeler labelował - jakie jest inter-rater variability?
+- Sprawdźmy jak radzi sobie `DummyClassifier`
+- Dobór metryk
+:::
+
+
+## Dobór Metody {.smaller}
+
+. . .
+
+Start simple! Na początku ważne jest, żeby mieć punkt odniesienia w postaci prostego, podstawowego modelu (baseline).
+
+::: {.incremental}
+- Modele liniowe, decision tree, rozkład normalny
+:::
+
+. . .
+
+Potem przechodzimy do bardziej złożonych modeli
+
+::: {.incremental}
+- Computer vision - conv nets
+- Sequence modelling, NLP - recurrent nets (LSTM, GRU), Transformers
+- Tabular data - tree-based models (xgboost)
+- Time-series forecasting - autoregressive models (sarima, deep learning)
+- Anomaly Detection - Gaussian Mixture, Isolation Forest, Autoencoders
+- etc.
+:::
+
+## LeNet5 {auto-animate="true"}
+
+::: {.r-stack}
+![](assets/lenet5.jpeg){.fragment height="300"}
+
+![](assets/Yann_LeCun.jpeg){.fragment height="300"}
+:::
+
+## LeNet5 {auto-animate="true"}
+
+::: {.r-stack}
+![](assets/lenet5.jpeg){.fragment height="300"}
+
+![](assets/Yann_LeCun.jpeg){.fragment height="300"}
+:::
+*Image from LeCun et al., 1998*
+
+## Ewaluacja modelu
+
+::: {.incremental}
+- Metryki per klasa, per źródło danych (np. rodzaj aparatu)
+- Jak klasyfikacja to confusion matrix
+- Analiza przypadków gdzie model jest niepewny
+- Analiza przypadków gdzie model się myli i jest bardzo pewny
+:::
+
+## Jak poprawić jakość predykcji?
+
+::: {.incremental}
+- Dane (jakość)
+- Dane (różnorodność)
+- Dane (ilość)
+- Dane (class balancing, data augmentation)
+- Optymalizacja hiperparametrów (learning rate, loss function)
+- Modyfikacja modelu (dropout, batch/instance norm, inna architektura)
+- Nowinki takie jak: Vision Transformer, Diffusion Models, ChatGPT
+:::
+
+## Dalsze rozważania
+
+. . .
+
+Co mamy zrobić jak ktoś wrzuci nam obrazek psa w czapce jedzącego popcorn?
+
+::: {.r-stack}
+![](assets/dog_popcorn.png){height="350"}
+:::
+
+. . .
+
+Don't know - kiedy warto odmówić predykcji.
+
+## Czy to się opłaci?
+
+RF na CPU vs. DL na GPU
+
+. . .
+
+```
+zysk_z_modelu_v2 > koszt_implementacji_v2 + koszt_utrzymania_v2 - koszt_utrzymania_v1
+```
+
+. . .
+
+Real-time inference endpoint (AWS SageMaker, Frankfurt region) ^[https://aws.amazon.com/sagemaker/pricing/]
+
+::: {.incremental}
+- Random Forest: `ml.t2.medium` (2 vCPU, 4 GiB) - $0.064
+- ResNet: `ml.g4dn.xlarge` (4 vCPU, 16 GiB, GPU) - $0.921 (<span style="color:red">x14!</span>)
+:::
+
+## Tips
+
+- Patrzcie **często** w dane
+- Clean code (funkcje, klasy w plikach `.py`, a nie w `.ipynb`)
+- Bug free code: tests, tests, tests (`pytest`)
+- Experiment reproducibility and tracking
+    - code versioning (git)
+    - dockerized environment
+    - tools (`dvc`, `wandb`, `kedro`, `neptune`)
+
+## Dzięki!
+
+Materiały dostępne pod [https://github.com/gchlebus/pragmatic-ml-engineer](https://github.com/gchlebus/pragmatic-ml-engineer)
+
+
+
+
+
+
+
+
+
+
