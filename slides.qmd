@@ -8,6 +8,7 @@ format:
     revealjs:
         chalkboard: true
         code-copy: true
+        logo: assets/QualtricsXM_RBG.png
 ---
 
 ## Intro
@@ -287,9 +288,65 @@ Real-time inference endpoint (AWS SageMaker, Frankfurt region) ^[https://aws.ama
     - dockerized environment
     - tools (`dvc`, `wandb`, `kedro`, `neptune`)
 
-## Dzięki!
+## Dzięki! {auto-animate="true"}
 
-Materiały dostępne pod [https://github.com/gchlebus/pragmatic-ml-engineer](https://github.com/gchlebus/pragmatic-ml-engineer)
+:::: {.columns}
+
+::: {.column width="70%"}
+Podobało Ci się? Masz uwagi? Daj mi znać odpowiadając na krótką [ankietę](https://krksite.qualtrics.com/jfe/form/SV_b6ZnpVhPXEFkovQ).
+:::
+
+::: {.column width="30%"}
+![](assets/survey.png){height="150"}
+:::
+
+::::
+
+## Dzięki! {auto-animate="true"}
+
+:::: {.columns}
+
+::: {.column width="70%"}
+Podobało Ci się? Masz uwagi? Daj mi znać odpowiadając na krótką [ankietę](https://krksite.qualtrics.com/jfe/form/SV_b6ZnpVhPXEFkovQ).
+
+<br><br>
+Qualtrics KRK is hiring! [Open roles](https://www.qualtrics.com/careers/us/en/search-results?m=3&location=Krakow%2C%20Poland)
+:::
+
+::: {.column width="30%"}
+![](assets/survey.png){height="150"}
+
+![](assets/open_roles.png){height="150"}
+:::
+
+::::
+
+## Dzięki! {auto-animate="true"}
+
+:::: {.columns}
+
+::: {.column width="70%"}
+Podobało Ci się? Masz uwagi? Daj mi znać odpowiadając na krótką [ankietę](https://krksite.qualtrics.com/jfe/form/SV_b6ZnpVhPXEFkovQ).
+
+<br><br>
+Qualtrics KRK is hiring! [Open roles](https://www.qualtrics.com/careers/us/en/search-results?m=3&location=Krakow%2C%20Poland)
+
+<br><br><br>
+Materiały z warsztatów dostępne pod [https://github.com/gchlebus/pragmatic-ml-engineer](https://github.com/gchlebus/pragmatic-ml-engineer)
+:::
+
+::: {.column width="30%"}
+![](assets/survey.png){height="150"}
+
+![](assets/open_roles.png){height="150"}
+
+![](assets/repo.png){height="150"}
+:::
+
+::::
+
+
+
 
 
 
